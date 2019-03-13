@@ -46,12 +46,30 @@ public class JobData {
         return values;
     }
 
+    public static ArrayList<HashMap<String,String>> findByValue(String val) {
+        ArrayList<HashMap<String,String>> jobs = new ArrayList<>();
+
+        for(int i = 0; i < allJobs.size(); i++) {
+            HashMap<String,String> thisJob = allJobs.get(i);
+            for(String j : thisJob.keySet()) {
+                if(thisJob.get(j).toLowerCase().contains(val)) {
+                    jobs.add(thisJob);
+                    break;
+                }
+            }
+        }
+
+        return jobs;
+    }
+
     public static ArrayList<HashMap<String, String>> findAll() {
 
         // load data, if not already loaded
         loadData();
 
-        return allJobs;
+        ArrayList<HashMap<String,String>> allJobsProxy = new ArrayList<>(allJobs);
+
+        return allJobsProxy;
     }
 
     /**
@@ -74,7 +92,7 @@ public class JobData {
 
         for (HashMap<String, String> row : allJobs) {
 
-            String aValue = row.get(column);
+            String aValue = row.get(column).toLowerCase();
 
             if (aValue.contains(value)) {
                 jobs.add(row);

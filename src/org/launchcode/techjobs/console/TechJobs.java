@@ -1,6 +1,7 @@
 package org.launchcode.techjobs.console;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -42,6 +43,7 @@ public class TechJobs {
                 } else {
 
                     ArrayList<String> results = JobData.findAll(columnChoice);
+                    Collections.sort(results);
 
                     System.out.println("\n*** All " + columnChoices.get(columnChoice) + " Values ***");
 
@@ -58,10 +60,10 @@ public class TechJobs {
 
                 // What is their search term?
                 System.out.println("\nSearch term: ");
-                String searchTerm = in.nextLine();
+                String searchTerm = in.nextLine().toLowerCase();
 
                 if (searchField.equals("all")) {
-                    System.out.println("Search all fields not yet implemented.");
+                    printJobs(JobData.findByValue(searchTerm));
                 } else {
                     printJobs(JobData.findByColumnAndValue(searchField, searchTerm));
                 }
@@ -111,6 +113,32 @@ public class TechJobs {
     // Print a list of jobs
     private static void printJobs(ArrayList<HashMap<String, String>> someJobs) {
 
-        System.out.println("printJobs is not implemented yet");
+        // Check for results
+        if(someJobs.size() != 0) {
+            // Iterate through results
+            for(int i = 0; i < someJobs.size(); i++) {
+                // Get Job
+                HashMap<String,String> jobMap = someJobs.get(i);
+
+                // Print Job
+                System.out.println("*****");
+                for(String key : jobMap.keySet()) {
+                    System.out.println(key + ": " + jobMap.get(key));
+                }
+                /* Alt print method? Prettier? WORDIER THO and less adaptable
+                System.out.print("*****\nPosition Type: " +
+                        jobMap.get("position type") +
+                        "\nName: " + jobMap.get("name") +
+                        "\nEmployer: " + jobMap.get("employer") +
+                        "\nLocation: " + jobMap.get("location") +
+                        "\nCore Competency: " +
+                        jobMap.get("core competency") +
+                        "\n*****");
+                */
+            }
+            System.out.println("*****");
+        } else {
+            System.out.println("No Results Found");
+        }
     }
 }
