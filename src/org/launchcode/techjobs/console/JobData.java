@@ -10,6 +10,7 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by LaunchCode
@@ -47,10 +48,16 @@ public class JobData {
     }
 
     public static ArrayList<HashMap<String,String>> findByValue(String val) {
+
+        // load data, if not already loaded
+        loadData();
+
         ArrayList<HashMap<String,String>> jobs = new ArrayList<>();
 
-        for(int i = 0; i < allJobs.size(); i++) {
-            HashMap<String,String> thisJob = allJobs.get(i);
+        ListIterator<HashMap<String,String>> jobIterator = allJobs.listIterator(allJobs.size());
+
+        while(jobIterator.hasPrevious()) {
+            HashMap<String,String> thisJob = jobIterator.previous();
             for(String j : thisJob.keySet()) {
                 if(thisJob.get(j).toLowerCase().contains(val)) {
                     jobs.add(thisJob);
